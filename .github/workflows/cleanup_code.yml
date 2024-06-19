@@ -10,7 +10,6 @@ jobs:
     inspection:
         runs-on: ubuntu-latest
         name: Inspect Code
-        needs: cleanup
 
         steps:
             -   name: Checkout
