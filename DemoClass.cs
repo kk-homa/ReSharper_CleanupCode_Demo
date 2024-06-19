@@ -6,7 +6,7 @@ internal class DemoClass : IDemoInterface
 
     public string InterfaceProperty { get; set; }
 
-    public int PublicProperty { get; set; }
+    public int PublicProperty { get; set; } 
 
     public DemoClass(int privateProperty) =>
         _privateProperty = privateProperty;
