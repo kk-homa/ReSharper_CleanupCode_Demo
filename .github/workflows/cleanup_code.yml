@@ -3,51 +3,51 @@ name: ReSharper CLI CleanupCode
 on: [ push ]
 
 jobs:
-    cleanup:
-        runs-on: ubuntu-latest
-        name: Cleanup Code
-        
-        steps:
-            -   name: Checkout
-                uses: actions/checkout@v3
-
-            -   name: Setup .NET
-                uses: actions/setup-dotnet@v3
-                with:
-                    dotnet-version: 8.0.x
-
-            -   name: Restore Dependencies
-                run: dotnet restore ReSharperCleanupCodeDemo.sln
-                
-            -   name: Cleanup Code
-                id: cleanup
-                uses: ArturWincenciak/ReSharper_CleanupCode@v3.0
-                with:
-                    solution: 'ReSharperCleanupCodeDemo.sln'
-                    fail_on_reformat_needed: 'yes'
-                    jb_cleanup_code_arg: '--verbosity=INFO'
+  cleanup:
+    runs-on: ubuntu-latest
+    name: Cleanup Code
     
-    inspection:
-        runs-on: ubuntu-latest
-        name: Inspect Code
-        needs: cleanup
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-        steps:
-            -   name: Checkout
-                uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
 
-            -   name: Setup .NET
-                uses: actions/setup-dotnet@v3
-                with:
-                    dotnet-version: 8.0.x
+      - name: Restore Dependencies
+        run: dotnet restore ReSharperCleanupCodeDemo.sln
+          
+      - name: Cleanup Code
+        id: cleanup
+        uses: ArturWincenciak/ReSharper_CleanupCode@v2.0
+        with:
+          solution: 'ReSharperCleanupCodeDemo.sln'
+          fail_on_reformat_needed: 'no'
+          jb_cleanup_code_arg: '--verbosity=INFO --profile=Almost Full Cleanup --exclude=**UnitTests/**.*'
+  
+  inspection:
+    runs-on: ubuntu-latest
+    name: Inspect Code
+    needs: cleanup
 
-            -   name: Restore Dependencies
-                run: dotnet restore ReSharperCleanupCodeDemo.sln
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-            -   name: Inspect code
-                uses: muno92/resharper_inspectcode@1.11.8
-                with:
-                    solutionPath: ./ReSharperCleanupCodeDemo.sln
-                    failOnIssue: 1
-                    minimumSeverity: notice
-                    solutionWideAnalysis: true
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+
+      - name: Restore Dependencies
+        run: dotnet restore ReSharperCleanupCodeDemo.sln
+
+      - name: Inspect code
+        uses: muno92/resharper_inspectcode@1.6.5
+        with:
+          solutionPath: ./ReSharperCleanupCodeDemo.sln
+          failOnIssue: 1
+          minimumSeverity: notice
+          solutionWideAnalysis: true
