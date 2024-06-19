@@ -1,6 +1,7 @@
 name: ReSharper CLI CleanupCode
 
-pull_request:
+on:
+  pull_request:
     types: [opened, reopened, synchronize]
     paths:
       - '**.cs'
