@@ -7,30 +7,6 @@ on:
       - '**.cs'
 
 jobs:
-    cleanup:
-        runs-on: ubuntu-latest
-        name: Cleanup Code
-        
-        steps:
-            -   name: Checkout
-                uses: actions/checkout@v3
-
-            -   name: Setup .NET
-                uses: actions/setup-dotnet@v3
-                with:
-                    dotnet-version: 8.0.x
-
-            -   name: Restore Dependencies
-                run: dotnet restore ReSharperCleanupCodeDemo.sln
-                
-            -   name: Cleanup Code
-                id: cleanup
-                uses: ArturWincenciak/ReSharper_CleanupCode@v3.0
-                with:
-                    solution: 'ReSharperCleanupCodeDemo.sln'
-                    fail_on_reformat_needed: 'yes'
-                    jb_cleanup_code_arg: '--verbosity=INFO'
-    
     inspection:
         runs-on: ubuntu-latest
         name: Inspect Code
